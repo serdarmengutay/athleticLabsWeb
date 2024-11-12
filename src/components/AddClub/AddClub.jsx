@@ -1,37 +1,38 @@
-import React, { useState } from 'react';
-import { Button, Form, Input, Upload, ColorPicker } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import React, { useState } from "react";
+import { Button, Form, Input, Upload, ColorPicker, Row, Col } from "antd";
+import { PlusOutlined, DeleteOutlined, SaveOutlined } from "@ant-design/icons";
+import { useDispatch } from "react-redux";
+import { addClub } from "../../redux/slices/clubsSlice";
 
-const onFinish = (values) => {
-  console.log('Success:', values);
-};
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
-
-const normFile = (e) => {
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e?.fileList;
-};
 
 const AddClub = () => {
   const [fileList, setFileList] = useState([]);
+  const dispatch = useDispatch();
 
   const handleChange = ({ fileList }) => {
     setFileList(fileList);
   };
+  const onFinish = (values) => {
+    console.log("Success:", values);
+    dispatch(addClub(values))
+  
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+  
+  const normFile = (e) => {
+    if (Array.isArray(e)) {
+      return e;
+    }
+    return e?.fileList;
+  };
+  
+
 
   return (
     <Form
       name="addClubForm"
-      labelCol={{
-        span: 8,
-      }}
-      wrapperCol={{
-        span: 16,
-      }}
       style={{
         maxWidth: 600,
       }}
@@ -42,58 +43,80 @@ const AddClub = () => {
       onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
-      <Form.Item
-        label="Kulüp Adı"
-        name="clubName"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your club name!',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      
-      <Form.Item
-        label="Logo"
-        valuePropName="fileList"
-        getValueFromEvent={normFile}
-      >
-        <Upload
-          action="/upload.do"
-          listType="picture-card"
-          fileList={fileList}
-          onChange={handleChange}
-          maxCount={1} 
+      <Col>
+        <Form.Item
+          label="Kulüp Adı"
+          name="clubName"
+          rules={[
+            {
+              required: true,
+              message: "Please input your club name!",
+            },
+          ]}
         >
-          {fileList.length >= 1 ? null : (
-            <div>
-              <PlusOutlined />
-              <div style={{ marginTop: 8 }}>Upload</div>
-            </div>
-          )}
-        </Upload>
-      </Form.Item>
-
-      <Form.Item label="Tema 1">
-        <ColorPicker />
-      </Form.Item>
-      
-      <Form.Item label="Tema 2">
-        <ColorPicker />
-      </Form.Item>
-
-      <Form.Item
-        wrapperCol={{
-          offset: 8,
-          span: 16,
-        }}
-      >
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
-      </Form.Item>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="Logo"
+          valuePropName="fileList"
+          getValueFromEvent={normFile}
+          name="logo"
+          rules={[
+            {
+              required: true,
+              message: "Please input your logo!",
+            },
+          ]}
+        >
+          <Upload
+            action="/upload.do"
+            listType="picture-card"
+            fileList={fileList}
+            onChange={handleChange}
+            maxCount={1}
+          >
+            {fileList.length >= 1 ? null : (
+              <div>
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+              </div>
+            )}
+          </Upload>
+        </Form.Item>
+        <Col span={12}>
+          <Form.Item
+            rules={[
+              {
+                required: true,
+                message: "Please input your club theme!",
+              },
+            ]}
+            name="theme1"
+            label="Tema 1"
+          >
+            <ColorPicker allowClear={true} size="small" />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item name="theme2" label="Tema 2">
+            <ColorPicker allowClear={true} size="small" />
+          </Form.Item>
+        </Col>
+      </Col>
+      <Row gutter={24}>
+        <Col>
+          <Button type="primary" htmlType="reset">
+            Temizle
+            <DeleteOutlined />
+          </Button>
+        </Col>
+        <Col>
+          <Button type="primary" htmlType="submit">
+            Kaydet
+            <SaveOutlined />
+          </Button>
+        </Col>
+      </Row>
     </Form>
   );
 };

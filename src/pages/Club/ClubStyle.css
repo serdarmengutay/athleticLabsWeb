@@ -1,0 +1,61 @@
+.club-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  text-align: center;
+  min-height: 100vh;
+  background-color: #242424;
+}
+
+.club-header {
+  margin-bottom: 30px;
+}
+
+.club-logo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.club-name {
+  margin-top: 10px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
+.player-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 150px;
+}
+
+.player-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.player-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 5px 0;
+}
+
+.player-position {
+  font-size: 0.9rem;
+  color: #666;
+}

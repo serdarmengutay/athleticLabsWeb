@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Upload, ColorPicker, Row, Col } from "antd";
 import { PlusOutlined, DeleteOutlined, SaveOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { addClub } from "../../redux/slices/clubsSlice";
+import axios from "axios";
 
 
 const AddClub = () => {
@@ -12,11 +13,28 @@ const AddClub = () => {
   const handleChange = ({ fileList }) => {
     setFileList(fileList);
   };
-  const onFinish = (values) => {
-    console.log("Success:", values);
-    dispatch(addClub(values))
+
+
+  const onFinish = async (values) => {
+    try {
+      const payload = {
+        clubName: values.clubName,
+        theme1: values.theme1, 
+        theme2: values.theme2,
+        logo: fileList[0]?.thumbUrl,
+      };
   
+      const response = await axios.post(`http://localhost:5001/api/clubs`, payload);
+  
+      console.log("response", response);
+      dispatch(addClub(response.data));
+      setFileList([]);
+
+    } catch (error) {
+      console.log("error", error);
+    }
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -28,8 +46,6 @@ const AddClub = () => {
     return e?.fileList;
   };
   
-
-
   return (
     <Form
       name="addClubForm"

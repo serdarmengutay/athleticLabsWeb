@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux'
 
 const Home = () => {
   const states = useSelector((state) => state)
+
+  
   
   // console.log(JSON.stringify(states))
     const { Panel} = Collapse
